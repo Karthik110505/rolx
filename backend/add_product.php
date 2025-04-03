@@ -7,40 +7,38 @@ if (!isset($_SESSION['user']['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user']['user_id'];
-$phone = $_SESSION['user']['phone'];
-$product_name = $_POST['product_name'];
-$description = $_POST['description'];
-
-if ($_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
-    // Ensure 'products' directory exists
-    $uploadDir = __DIR__ . "/products/"; // Newly added line
-    if (!is_dir($uploadDir)) { // Newly added line
-        mkdir($uploadDir, 0777, true); // Newly added line
-    }
-
-    $imagePath = "products/" . basename($_FILES['product_image']['name']);
-    move_uploaded_file($_FILES['product_image']['tmp_name'], $uploadDir . basename($_FILES['product_image']['name'])); // Newly added line
-} else {
-    echo json_encode(["error" => "Error uploading image"]);
-    exit();
-}
+$buyer_id = $_SESSION['user']['user_id'];
+$product_id = $_POST['product_id'];
 
 try {
-    $stmt = $conn->prepare("INSERT INTO products (product_name, description, owner_id, owner_phone, product_image) 
-                            VALUES (:product_name, :description, :owner_id, :owner_phone, :product_image)");
-    $stmt->bindParam(':product_name', $product_name);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':owner_id', $user_id);
-    $stmt->bindParam(':owner_phone', $phone);
-    $stmt->bindParam(':product_image', $imagePath);
+    // Step 1: Get owner_id from products table using product_id
+    $stmt = $conn->prepare("SELECT owner_id FROM products WHERE product_id = :product_id");
+    $stmt->bindParam(':product_id', $product_id);
+    $stmt->execute();
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$product) {
+        echo json_encode(["error" => "Product not found"]);
+        exit();
+    }
+
+    $owner_id = $product['owner_id'];
+
+    // Step 2: Insert into cart table
+    $stmt = $conn->prepare("INSERT INTO cart (product_id, owner_id, buyer_id, status) 
+                           VALUES (:product_id, :owner_id, :buyer_id, :status)");
+    
+    $stmt->bindParam(':product_id', $product_id);
+    $stmt->bindParam(':owner_id', $owner_id);
+    $stmt->bindParam(':buyer_id', $buyer_id);
+    $stmt->bindValue(':status', 'pending');  // Default status
     
     if ($stmt->execute()) {
-        echo json_encode(["success" => "Product added successfully"]);
+        echo json_encode(["success" => "Product added to cart!"]);
     } else {
-        echo json_encode(["error" => "Failed to add product"]);
+        echo json_encode(["error" => "Insert failed"]);
     }
-} catch (Exception $e) {
+} catch (PDOException $e) {
     echo json_encode(["error" => $e->getMessage()]);
 }
 ?>

@@ -10,9 +10,16 @@ if (!isset($_SESSION['user']['user_id'])) {
 $user_id = $_SESSION['user']['user_id'];
 
 try {
-    // Fetch products along with owner's username
+    // Fetch products along with owner's username, product_id, and owner_id
     $stmt = $conn->prepare("
-        SELECT p.*, u.username 
+        SELECT 
+            p.product_id,
+            p.owner_id,
+            p.product_name,
+            p.description,
+            p.product_image,
+            p.owner_phone,
+            u.username
         FROM products p
         JOIN users u ON p.owner_id = u.user_id
         WHERE p.owner_id != :user_id
@@ -20,7 +27,7 @@ try {
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     echo json_encode($products);
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);

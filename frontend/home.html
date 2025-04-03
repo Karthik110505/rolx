@@ -40,97 +40,187 @@
             const content = document.getElementById("content");
 
             if (section === "buy") {
-                content.innerHTML = `
-                    <h2 class="text-center">Available Products</h2>
-                    <div id="product-list" class="row justify-content-center">Loading...</div>
-                `;
+        content.innerHTML = `
+            <h2 class="text-center">Available Products</h2>
+            <div id="product-list" class="row justify-content-center">Loading...</div>
+        `;
 
-                fetch("../backend/get_products.php")
-                    .then(response => response.json())
-                    .then(products => {
-                        if (products.error) {
-                            document.getElementById("product-list").innerHTML = `<p>Error: ${products.error}</p>`;
-                            return;
-                        }
+        fetch("../backend/get_products.php")
+            .then(response => response.json())
+            .then(products => {
+                if (products.error) {
+                    document.getElementById("product-list").innerHTML = `<p>Error: ${products.error}</p>`;
+                    return;
+                }
 
-                        let productList = "";
-                        products.forEach(product => {
-                            productList += `
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3 d-flex">
-                                    <div class="card shadow-sm h-100 product-card d-flex flex-column">
-                                        <div class="image-container">
-                                            <img src="../backend/${product.product_image}" class="card-img-top" alt="${product.product_name}">
-                                        </div>
-                                        <div class="card-body d-flex flex-column flex-grow-1">
-                                            <h6 class="card-title">${product.product_name}</h6>
-                                            <p class="card-text flex-grow-1">${product.description}</p>
-                                            <p class="card-text"><strong>Owner:</strong> ${product.username}</p>
-                                            <p class="card-text"><strong>Phone:</strong> ${product.owner_phone}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        });
+                let productList = "";
+                products.forEach(product => {
+    productList += `
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">
+            <div class="card shadow-sm h-100 product-card d-flex flex-column">
+                <div class="image-container">
+                    <img src="../backend/${product.product_image}" class="card-img-top" alt="${product.product_name}">
+                </div>
+                <div class="card-body d-flex flex-column flex-grow-1">
+                    <h6 class="card-title">${product.product_name}</h6>
+                    <p class="card-text flex-grow-1">${product.description}</p>
+                    <p class="card-text"><strong>Owner:</strong> ${product.username}</p>
+                    <p class="card-text"><strong>Phone:</strong> ${product.owner_phone}</p>
+                    <p class="card-text"><strong>Product ID:</strong> ${product.product_id}</p>
+                    <p class="card-text"><strong>Owner ID:</strong> ${product.owner_id}</p>
+                    <button class="btn btn-primary mt-2" onclick="buyProduct(${product.product_id}, '${product.owner_id}')">
+                        Buy
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+});
 
-                        let productListContainer = document.getElementById("product-list");
-                        if (productListContainer) {
-                            productListContainer.innerHTML = productList;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching products:", error);
-                        document.getElementById("product-list").innerHTML = "<p>Error loading products.</p>";
-                    });
-            } else if (section === "sell") {
-                content.innerHTML = `
-                    <h2 class="text-center">Sell Items</h2>
-                    <p>Your sold products:</p>
-                    <div id="sold-items" class="row"></div>
-                    <button class="btn btn-primary mt-3" onclick="showSellForm()">Sell an Item</button>
-                    <div id="sell-form" class="mt-3" style="display:none;">
-                        <h3>Sell a New Item</h3>
-                        <form id="sellProductForm" class="p-3 border rounded shadow-sm bg-light" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label class="form-label">Product Name:</label>
-                                <input type="text" id="product_name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Description:</label>
-                                <textarea id="description" class="form-control" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Image:</label>
-                                <input type="file" id="product_image" class="form-control" accept="image/*" required>
-                            </div>
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </form>
-                    </div>
-                `;
+                let productListContainer = document.getElementById("product-list");
+                if (productListContainer) {
+                    productListContainer.innerHTML = productList;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching products:", error);
+                document.getElementById("product-list").innerHTML = "<p>Error loading products.</p>";
+            });
+    }
+    else if (section === "sell") {
+    content.innerHTML = `
+        <h2 class="text-center">Sell Items</h2>
+        <p class="text-center">Your sold products:</p>
+        <div id="sold-items" class="row justify-content-center">Loading...</div>
 
-                fetch("../backend/get_sold_products.php")
-                    .then(response => response.json())
-                    .then(products => {
-                        let productList = "<div class='row'>";
-                        products.forEach(product => {
-                            productList += `
-                                <div class="col-md-4">
-                                    <div class="card shadow-sm">
-                                        <img src="../backend/${product.product_image}" class="card-img-top" alt="${product.product_name}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${product.product_name}</h5>
-                                            <p class="card-text">${product.description}</p>
-                                            <p>Contact: ${product.owner_phone}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        productList += "</div>";
-                        document.getElementById("sold-items").innerHTML = productList;
-                    });
+        <button class="btn btn-primary mt-3 d-block mx-auto" onclick="showSellForm()">Sell an Item</button>
+        
+        <div id="sell-form" class="mt-3 p-3 border rounded shadow-sm bg-light" style="display:none; max-width: 500px; margin:auto;">
+            <h3 class="text-center">Sell a New Item</h3>
+            <form id="sellProductForm" class="p-3" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Product Name:</label>
+                    <input type="text" id="product_name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description:</label>
+                    <textarea id="description" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image:</label>
+                    <input type="file" id="product_image" class="form-control" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Submit</button>
+            </form>
+        </div>
+    `;
 
-                setTimeout(attachSellFormListener, 500);
+    fetch("../backend/get_sold_products.php")
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                document.getElementById("sold-items").innerHTML = "<p class='text-center text-muted'>No items sold yet.</p>";
+                return;
             }
+
+            let productList = "";
+            products.forEach(product => {
+                productList += `
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">
+                        <div class="card shadow-sm h-100 product-card d-flex flex-column">
+                            <div class="image-container">
+                                <img src="../backend/${product.product_image}" class="card-img-top" alt="${product.product_name}">
+                            </div>
+                            <div class="card-body d-flex flex-column flex-grow-1">
+                                <h6 class="card-title">${product.product_name}</h6>
+                                <p class="card-text flex-grow-1">${product.description}</p>
+                                <p class="card-text"><strong>Product ID:</strong> ${product.product_id}</p>
+                                <p class="card-text"><strong>Contact:</strong> ${product.owner_phone}</p>
+                `;
+
+                if (product.status === "SOLD") {
+                    productList += `<p class="text-success"><strong>Status:</strong> SOLD</p>`;
+                } else if (product.status === "PENDING") {
+                    productList += `
+                        <p class="text-warning"><strong>Pending Buyer:</strong> ${product.buyer_id}</p>
+                        <button class="btn btn-success btn-sm mt-2" onclick="confirmSale(${product.cart_id})">
+                            Confirm Sale
+                        </button>
+                        <button class="btn btn-danger btn-sm mt-2" onclick="cancelSale(${product.cart_id})">
+                            Cancel
+                        </button>
+                    `;
+                } else {
+                    productList += `<p class="text-info"><strong>Status:</strong> Available</p>`;
+                }
+
+                productList += `</div></div></div>`;
+            });
+
+            document.getElementById("sold-items").innerHTML = productList;
+        })
+        .catch(error => {
+            console.error("Error fetching sold products:", error);
+            document.getElementById("sold-items").innerHTML = "<p class='text-center text-danger'>Error loading sold items.</p>";
+        });
+
+    setTimeout(attachSellFormListener, 500);
+}
+
+            else if (section === "cart") {
+                content.innerHTML = `
+            <h2 class="text-center">Your Cart</h2>
+            <div id="cart-items" class="row justify-content-center">Loading...</div>
+        `;
+        fetch("../backend/get_cart.php")
+    .then(response => response.json())
+    .then(data => {
+        console.log("Debug Info:", data); // Debugging
+        if (data.error) {
+            document.getElementById("cart-items").innerHTML = `<p>Error: ${data.error}</p>`;
+            return;
+        }
+
+        if (!Array.isArray(data)) {
+            console.error("Unexpected response format:", data);
+            document.getElementById("cart-items").innerHTML = "<p>Invalid data received.</p>";
+            return;
+        }
+
+        let cartList = "";
+        data.forEach(item => {
+            cartList += `
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">
+                    <div class="card shadow-sm h-100 product-card d-flex flex-column">
+                        <div class="image-container">
+                            <img src="../backend/${item.product_image}" class="card-img-top" alt="${item.product_name}">
+                        </div>
+                        <div class="card-body d-flex flex-column flex-grow-1">
+                            <h6 class="card-title">${item.product_name}</h6>
+                            <p class="card-text flex-grow-1">${item.description}</p>
+                            <p class="card-text"><strong>Product ID:</strong> ${item.product_id}</p>
+                            <p class="card-text"><strong>Owner ID:</strong> ${item.owner_id}</p>
+                            <p class="card-text"><strong>Owner:</strong> ${item.owner_name}</p>
+                            <p class="card-text"><strong>Phone:</strong> ${item.owner_phone}</p>
+                            <p class="card-text"><strong>Status:</strong> <span class="badge bg-info">${item.status}</span></p>
+                            <button class="btn btn-danger mt-2" onclick="removeFromCart(${item.cart_id})">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        document.getElementById("cart-items").innerHTML = cartList;
+    })
+    .catch(error => {
+        console.error("Error fetching cart:", error);
+        document.getElementById("cart-items").innerHTML = "<p>Error loading cart.</p>";
+    });
+
+}
+
         }
 
         function showSellForm() {
@@ -201,7 +291,95 @@
                 window.location.href = "login.html";
             });
         }
-    </script>
+        function buyProduct(productId, ownerId) {
+    console.log("buyProduct called with productId:", productId, "ownerId:", ownerId); // Debugging
+
+    fetch("../backend/add_to_cart.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+            product_id: productId, 
+            owner_id: ownerId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response:", data); // Debugging
+        if (data.success) {
+            alert("Product added to cart!");
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error); // Debugging
+    });
+}
+ 
+function removeFromCart(cartId) {
+    fetch("../backend/remove_from_cart.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart_id: cartId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Item removed from cart!");
+            loadSection("cart"); // Reload cart after removal
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function confirmSale(cartId) {
+    fetch('../backend/confirm_sale.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `cart_id=${cartId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Sale confirmed successfully!");
+            location.reload(); // Refresh the page to reflect changes
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+
+// Function to cancel the sale
+function cancelSale(cartId) {
+    fetch("../backend/cancel_sale.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart_id: cartId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Sale canceled!");
+            loadSection("sell"); // Refresh sell section
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+ 
+
+
+ 
+ 
+ </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
