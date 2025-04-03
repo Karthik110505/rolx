@@ -12,7 +12,7 @@
             <li><a href="#" onclick="loadSection('buy')">Buy</a></li>
             <li><a href="#" onclick="loadSection('sell')">Sell</a></li>
             <li><a href="#" onclick="loadSection('cart')">Cart</a></li>
-            <li><a href="#" onclick="loadProfile()">Profile</a></li> <!-- Load profile dynamically -->
+            <li><a href="#" onclick="loadProfile()">Profile</a></li>
         </ul>
     </nav>
 
@@ -33,17 +33,83 @@
             } else if (section === "sell") {
                 content.innerHTML = `
                     <h2>Sell Items</h2>
-                    <p>List items you want to sell here.</p>
-                    <button onclick="sellItem()">Sell an Item</button>
+                    <p>Your sold products:</p>
+                    <div id="sold-items"></div>
+                    <button onclick="showSellForm()">Sell an Item</button>
+                    <div id="sell-form" style="display:none;">
+                        <h3>Sell a New Item</h3>
+                        <form id="sellProductForm" enctype="multipart/form-data">
+                            <label>Product Name:</label>
+                            <input type="text" id="product_name" required><br>
+                            <label>Description:</label>
+                            <textarea id="description" required></textarea><br>
+                            <label>Image:</label>
+                            <input type="file" id="product_image" accept="image/*" required><br>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
                 `;
-            } else if (section === "cart") {
-                content.innerHTML = `
-                    <h2>Cart</h2>
-                    <p>View items in your cart.</p>
-                `;
+
+                fetch("../backend/get_sold_products.php")
+                    .then(response => response.json())
+                    .then(products => {
+                        let productList = "<ul>";
+                        products.forEach(product => {
+                            productList += `
+                                <li>
+                                    <h3>${product.product_name}</h3>
+                                    <p>${product.description}</p>
+                                    <img src="../backend/${product.product_image}" width="100">
+                                    <p>Contact: ${product.owner_phone}</p>
+                                </li>
+                            `;
+                        });
+                        productList += "</ul>";
+                        document.getElementById("sold-items").innerHTML = productList;
+                    });
+
+                setTimeout(attachSellFormListener, 500);
             }
         }
 
+        function showSellForm() {
+            document.getElementById("sell-form").style.display = "block";
+        }
+
+        function attachSellFormListener() {
+            const form = document.getElementById("sellProductForm");
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                let productName = document.getElementById("product_name").value.trim();
+                let description = document.getElementById("description").value.trim();
+                let imageInput = document.getElementById("product_image").files[0];
+
+                if (!productName || !description || !imageInput) {
+                    alert("Please fill in all fields and select an image.");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("product_name", productName);
+                formData.append("description", description);
+                formData.append("product_image", imageInput);
+
+                fetch("../backend/add_product.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Product added successfully!");
+                        loadSection("sell");
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                });
+            });
+        }
         function loadProfile() {
             fetch("../backend/profile.php")
                 .then(response => response.json())
@@ -53,12 +119,11 @@
                         return;
                     }
 
-                    const content = document.getElementById("content");
-                    content.innerHTML = `
+                    document.getElementById("content").innerHTML = `
                         <h2>Profile</h2>
                         <div id="profile-details">
                             <h3>Welcome, ${user.full_name} (${user.username})</h3>
-                            <img src="uploads/${user.profile_picture}" alt="Profile Picture" width="100" height="100">
+                            <img src="../backend/uploads/${user.profile_picture}" alt="Profile Picture" width="100" height="100">
                             <p><strong>Email:</strong> ${user.email}</p>
                             <p><strong>Phone:</strong> ${user.phone}</p>
                             <p><strong>Department:</strong> ${user.department}</p>
