@@ -5,6 +5,7 @@ body {
     background: #f5f5f5;
 }
 
+/* Navigation bar styles */
 nav {
     background: #333;
     padding: 10px;
@@ -36,6 +37,12 @@ nav ul li a:hover {
     border-radius: 5px;
 }
 
+/* Content Styling */
+#content {
+    padding: 20px;
+    text-align: center;
+}
+
 #content section {
     display: none;
     padding: 20px;
@@ -47,4 +54,196 @@ nav ul li a:hover {
 
 #content section.active {
     display: block;
+}
+
+/* Product Grid */
+#product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Bootstrap Card Styling */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Reduce Product Card Width */
+.product-card {
+    width: 100%; /* Ensure it fits inside the Bootstrap column */
+    height: auto;
+    padding: 8px; /* Less padding */
+    font-size: 14px; /* Slightly smaller text */
+}
+
+/* Reduce Image Size */
+/* Uniform Image Height */
+.product-card img {
+    height: 150px; /* Set a fixed height */
+    object-fit: contain; /* Ensures the whole image is visible */
+    display: block;
+    margin: 0 auto; /* Centers image */
+    padding: 5px;
+}
+
+/* Reduce Text and Padding */
+.card-body {
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* Adjust Layout for Better Fit */
+#product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px; /* Reduce gap between items */
+    padding: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Image Container with Fixed Height */
+.product-card .image-container {
+    height: 150px; /* Same as img height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Uniform Body Alignment */
+.product-card .card-body {
+    min-height: 120px; /* Ensures all bodies start at the same level */
+    background-color: #f8f9fa; /* Light grey background */
+    padding: 12px;
+    border-top: 3px solid #333; /* Adds a darkish separator */
+}
+
+/* Dark Themed Card Body */
+.product-card .card-body {
+    background: linear-gradient(to bottom, #222, #444); /* Dark gradient */
+    color: white; /* White text for contrast */
+    border-top: 3px solid #ff6600; /* Accent color */
+    min-height: 120px; /* Ensures equal alignment */
+}
+
+/* Change Text Color */
+.product-card .card-body .card-title {
+    color: #ffcc00; /* Highlight product title */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+.image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px; /* Adjust as needed */
+    overflow: hidden;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Force all cards to be the same height */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure all cards take full height */
+}
+
+/* Ensure image container stays fixed */
+.image-container {
+    height: 150px; /* Set a fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Make images fit properly */
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Ensure card body expands evenly */
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Forces body to expand */
+}
+
+/* Push Owner & Phone to the bottom */
+.card-text:last-child {
+    margin-top: auto; /* Pushes text to the bottom */
+}
+
+
+/* Make all cards equal height */
+.card {
+    height: 100%; /* Forces equal height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make card body expand properly */
+.card-body {
+    flex-grow: 1; /* Expands the card body to fill space */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Push last text to the bottom */
+.card-body p:last-child {
+    margin-top: auto; /* Pushes content to bottom */
+}
+
+/* Image container with fixed height */
+.image-container {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
