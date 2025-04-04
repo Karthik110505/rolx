@@ -15,7 +15,6 @@ if (!isset($_POST['cart_id'])) {
 $cart_id = $_POST['cart_id'];
 
 try {
-    // Delete cart entry
     $stmt = $conn->prepare("DELETE FROM cart WHERE cart_id = :cart_id");
     $stmt->bindParam(':cart_id', $cart_id);
     $stmt->execute();

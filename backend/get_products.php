@@ -22,7 +22,10 @@ try {
             u.username
         FROM products p
         JOIN users u ON p.owner_id = u.user_id
-        WHERE p.owner_id != :user_id AND p.status != 'SOLD'
+        LEFT JOIN cart c ON p.product_id = c.product_id AND c.buyer_id = :user_id
+        WHERE p.owner_id != :user_id 
+            AND p.status != 'SOLD'
+            AND c.product_id IS NULL  -- Exclude products that are already in the cart
 
     ");
     $stmt->bindParam(':user_id', $user_id);

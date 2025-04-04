@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,7 +6,7 @@ body {
     background: #f5f5f5;
 }
 
-/* Navigation bar styles */
+/* Navigation Bar Styling */
 nav {
     background: #333;
     padding: 10px;
@@ -60,12 +61,19 @@ nav ul li a:hover {
 #product-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
     justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-    max-width: 1200px;
+    gap: 10px;
+    padding: 10px;
     margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%; /* Adjust this value as needed */
+
+}
+
+.container {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Bootstrap Card Styling */
@@ -73,6 +81,9 @@ nav ul li a:hover {
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .card:hover {
@@ -86,154 +97,17 @@ nav ul li a:hover {
     object-fit: cover;
 }
 
-/* Reduce Product Card Width */
+/* Product Card Styling */
 .product-card {
-    width: 100%; /* Ensure it fits inside the Bootstrap column */
+    width: 100%;
     height: auto;
-    padding: 8px; /* Less padding */
-    font-size: 14px; /* Slightly smaller text */
-}
-
-/* Reduce Image Size */
-/* Uniform Image Height */
-.product-card img {
-    height: 150px; /* Set a fixed height */
-    object-fit: contain; /* Ensures the whole image is visible */
-    display: block;
-    margin: 0 auto; /* Centers image */
-    padding: 5px;
-}
-
-/* Reduce Text and Padding */
-.card-body {
-    padding: 10px;
-}
-
-.card-title {
+    padding: 8px;
     font-size: 14px;
-    font-weight: bold;
-}
-
-.card-text {
-    font-size: 12px;
-    margin-bottom: 5px;
-}
-
-/* Adjust Layout for Better Fit */
-#product-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px; /* Reduce gap between items */
-    padding: 10px;
-    max-width: 1200px;
-    margin: 0 auto;
+    flex-direction: column;
 }
 
 /* Image Container with Fixed Height */
-.product-card .image-container {
-    height: 150px; /* Same as img height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-/* Uniform Body Alignment */
-.product-card .card-body {
-    min-height: 120px; /* Ensures all bodies start at the same level */
-    background-color: #f8f9fa; /* Light grey background */
-    padding: 12px;
-    border-top: 3px solid #333; /* Adds a darkish separator */
-}
-
-/* Dark Themed Card Body */
-.product-card .card-body {
-    background: linear-gradient(to bottom, #222, #444); /* Dark gradient */
-    color: white; /* White text for contrast */
-    border-top: 3px solid #ff6600; /* Accent color */
-    min-height: 120px; /* Ensures equal alignment */
-}
-
-/* Change Text Color */
-.product-card .card-body .card-title {
-    color: #ffcc00; /* Highlight product title */
-    font-size: 16px;
-    font-weight: bold;
-}
-
-
-
-.image-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 150px; /* Adjust as needed */
-    overflow: hidden;
-}
-
-.image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-/* Force all cards to be the same height */
-.product-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensure all cards take full height */
-}
-
-/* Ensure image container stays fixed */
-.image-container {
-    height: 150px; /* Set a fixed height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-/* Make images fit properly */
-.image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-/* Ensure card body expands evenly */
-.product-card .card-body {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Forces body to expand */
-}
-
-/* Push Owner & Phone to the bottom */
-.card-text:last-child {
-    margin-top: auto; /* Pushes text to the bottom */
-}
-
-
-/* Make all cards equal height */
-.card {
-    height: 100%; /* Forces equal height */
-    display: flex;
-    flex-direction: column;
-}
-
-/* Make card body expand properly */
-.card-body {
-    flex-grow: 1; /* Expands the card body to fill space */
-    display: flex;
-    flex-direction: column;
-}
-
-/* Push last text to the bottom */
-.card-body p:last-child {
-    margin-top: auto; /* Pushes content to bottom */
-}
-
-/* Image container with fixed height */
 .image-container {
     height: 150px;
     display: flex;
@@ -246,4 +120,201 @@ nav ul li a:hover {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+}
+
+/* Card Body Styling */
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #222, #444);
+    color: white;
+    border-top: 3px solid #ff6600;
+    padding: 10px;
+    min-height: 120px;
+}
+
+/* Card Title and Text Styling */
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.card-text {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.card-body p:last-child {
+    margin-top: auto;
+}
+
+/* Fade-in Animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade {
+    animation: fadeUp 0.8s ease-out;
+}
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Profile Card Styling */
+.profile-card {
+    width: 420px;
+    background: linear-gradient(135deg, #e6e9f0, #eef1f5);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin: auto;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+.profile-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.profile-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ff758c;
+    margin-bottom: 12px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Name and Username */
+.profile-card h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.profile-card h3 {
+    font-size: 16px;
+    color: #777;
+    font-weight: 400;
+}
+
+/* Profile Details */
+.profile-details {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease-in-out;
+}
+
+.profile-card:hover .profile-details {
+    background: linear-gradient(135deg, #f1f5ff, #ffffff);
+    transform: scale(1.05);
+}
+
+/* Profile Details List */
+.profile-details li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.profile-details li:hover {
+    background: #2a9df4;
+    color: white;
+}
+
+.profile-details li:last-child {
+    border-bottom: none;
+}
+
+.profile-details li strong {
+    flex: 1;
+    text-align: left;
+    color: #555;
+    font-weight: 600;
+    padding-right: 10px;
+}
+
+.profile-details li span {
+    flex: 2;
+    text-align: left;
+    font-weight: bold;
+    color: #222;
+    padding-left: 10px;
+}
+
+/* Logout Button */
+.profile-card .logout-btn {
+    display: block;
+    width: 80%;
+    margin: 20px auto 0;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #2a9df4, #1e7fc5);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(42, 157, 244, 0.4);
+}
+
+.profile-card .logout-btn:hover {
+    background: linear-gradient(135deg, #1e7fc5, #2a9df4);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(42, 157, 244, 0.5);
+}
+
+/* Navbar Styling */
+.navbar {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 12px 20px;
+}
+
+.navbar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff !important;
+}
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff !important;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #f8d210 !important;
+    transform: scale(1.1);
 }

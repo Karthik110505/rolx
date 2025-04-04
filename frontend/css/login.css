@@ -1,84 +1,124 @@
+/* --- Base Body Styles --- */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-}
-
-.login-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
+    background: linear-gradient(135deg, #4facfe, #8e44ad); /* Blue to Purple */
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* --- Background Animation --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1), transparent 25%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.1), transparent 25%);
+    animation: floatBackground 8s ease-in-out infinite;
+    z-index: 0;
+  }
+  
+  @keyframes floatBackground {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      transform: translateY(-10px) scale(1.02);
+    }
+  }
+  
+  /* --- Login Card Styling --- */
+  .card {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    animation: slideFadeUp 1s ease-out;
+  }
+  
+  /* --- Slide and Fade In Animation --- */
+  @keyframes slideFadeUp {
     from {
-        opacity: 0;
-        transform: translateY(-20px);
+      opacity: 0;
+      transform: translateY(40px);
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
+  }
+  
+  /* --- Heading Styling --- */
+  h2 {
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* --- Floating Input Styling --- */
+  .form-floating input {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
     border: none;
-    border-bottom: 2px solid #ccc;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    padding: 1rem 0.75rem;
+    font-size: 16px;
+  }
+  
+  .form-floating input:focus {
     outline: none;
-    font-size: 16px;
-    background: transparent;
-}
-
-.input-group label {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    color: #aaa;
-    transition: 0.3s;
-}
-
-.input-group input:focus + label,
-.input-group input:valid + label {
-    top: 0;
-    font-size: 12px;
-    color: #ff7eb3;
-}
-
-button {
-    padding: 10px;
-    border: none;
-    background: #ff7eb3;
+    box-shadow: 0 0 10px #ff7eb3;
+    background: white;
+  }
+  
+  .form-floating label {
+    color: #777;
+    transition: 0.3s ease;
+  }
+  
+  /* --- Staggered Animations --- */
+  .form-floating {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInInput 0.6s ease-out forwards;
+  }
+  
+  .form-floating:nth-of-type(1) {
+    animation-delay: 0.5s;
+  }
+  .form-floating:nth-of-type(2) {
+    animation-delay: 0.7s;
+  }
+  
+  @keyframes fadeInInput {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* --- Button Styling & Animation --- */
+  button {
+    padding: 12px;
+    font-weight: bold;
+    background-color: #ff7eb3;
     color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #ff4b91;
-}
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(255, 78, 146, 0.4);
+    transition: 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInInput 0.6s ease-out forwards;
+    animation-delay: 0.9s;
+  }
+  
+  button:hover {
+    background-color: #ff4b91;
+    box-shadow: 0 0 15px #ff4b91;
+  }
+  

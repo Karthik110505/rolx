@@ -12,9 +12,10 @@ include(__DIR__ . '/db.php');
 if (!isset($conn)) {
     die("Database connection failed.");
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Collect form data and sanitize it
+        // Collect and sanitize form data
         $user_id = htmlspecialchars($_POST['user_id']);
         $username = htmlspecialchars($_POST['username']);
         $email = htmlspecialchars($_POST['email']);
@@ -24,7 +25,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $department = htmlspecialchars($_POST['department']);
         $year_of_study = htmlspecialchars($_POST['year_of_study']);
 
-        // Hash the password before storing it in the database
+        // Check if email already exists
+        $checkQuery = "SELECT * FROM users WHERE email = :email";
+        $checkStmt = $conn->prepare($checkQuery);
+        $checkStmt->bindParam(':email', $email);
+        $checkStmt->execute();
+
+        if ($checkStmt->rowCount() > 0) {
+            echo "<script>
+                    alert('Email already registered. Please login.');
+                    window.location.href = '../frontend/login.html';
+                  </script>";
+            exit();
+        }
+
+        // Hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Handle profile picture upload
@@ -34,20 +49,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profile_picture = basename($_FILES["profile_picture"]["name"]);
             $target_file = $target_dir . $profile_picture;
 
-            // Move the uploaded file
             if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 die("Error uploading profile picture.");
             }
         }
 
-        // Prepare SQL statement to insert data into the users table
+        // Insert data into users table
         $sql = "INSERT INTO users (user_id, username, email, password, full_name, phone, profile_picture, department, year_of_study)
                 VALUES (:user_id, :username, :email, :password, :full_name, :phone, :profile_picture, :department, :year_of_study)";
         
-        // Prepare the statement
         $stmt = $conn->prepare($sql);
 
-        // Bind parameters
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
@@ -58,9 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':department', $department);
         $stmt->bindParam(':year_of_study', $year_of_study);
 
-        // Execute the query
         if ($stmt->execute()) {
-            // Redirect to home page after successful registration
             header("Location: ../frontend/login.html");
             exit();
         } else {
@@ -71,4 +81,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
