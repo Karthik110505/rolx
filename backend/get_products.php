@@ -22,7 +22,8 @@ try {
             u.username
         FROM products p
         JOIN users u ON p.owner_id = u.user_id
-        WHERE p.owner_id != :user_id
+        WHERE p.owner_id != :user_id AND p.status != 'SOLD'
+
     ");
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
