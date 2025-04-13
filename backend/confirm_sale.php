@@ -5,6 +5,7 @@ include 'db.php'; // Ensure database connection is included
 header("Content-Type: application/json");
 
 // Check if user is logged in
+
 if (!isset($_SESSION['user']['user_id'])) {
     echo json_encode(["success" => false, "error" => "User not logged in"]);
     exit();

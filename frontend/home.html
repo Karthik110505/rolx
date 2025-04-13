@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">C-OLX</a>
+            <a class="navbar-brand" href="#">R-OLX</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -42,7 +42,9 @@
             if (section === "buy") {
     content.innerHTML = `
         <h2 class="text-center">Available Products</h2>
+        <p class="text-center">Browse and purchase items:</p>
         <div id="product-list" class="row justify-content-center">Loading...</div>
+        
     `;
 
     fetch("../backend/get_products.php")
@@ -52,11 +54,11 @@
                 document.getElementById("product-list").innerHTML = `<p class='text-danger text-center'>Error: ${products.error}</p>`;
                 return;
             }
-
+//col-lg-3 col-md-4 col-sm-6 mb-3 d-flex
             let productList = "";
             products.forEach(product => {
-                productList += `
-                    <div class="col-lg-3 col-md-3 col-sm-6 mb-3 d-flex">
+                productList += ` 
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex"> 
                         <div class="card shadow-sm h-100 product-card d-flex flex-column">
                             <div class="image-container">
                                 <img src="../backend/${product.product_image}" class="card-img-top" alt="${product.product_name}">
