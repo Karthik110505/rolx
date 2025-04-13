@@ -1,17 +1,17 @@
 <?php
-// Database configuration
-$servername = "localhost"; // Your MySQL server (usually localhost)
-$username = "root";        // MySQL username
-$password = "";            // MySQL password (empty for localhost by default)
-$dbname = "colx";          // Database name (use your database name here)
+// Database configuration for InfinityFree
+$servername = "sql313.infinityfree.com"; // InfinityFree MySQL Hostname
+$username = "if0_38735546";              // Your MySQL username
+$password = "vE2mwxtj2f87HC";            // Your MySQL password
+$dbname = "if0_38735546_rolx";           // Your database name
 
 try {
     // Create connection
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // Set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Optional: echo "Connected successfully"; // Only for debugging
 } catch(PDOException $e) {
-    // If connection fails, print the error message
     echo "Connection failed: " . $e->getMessage();
 }
 ?>
